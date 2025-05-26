@@ -13,10 +13,8 @@
     Design ;;; NAME || VALUE
 */
 
-namespace SmartTDB //smart table database
+namespace SmartTDB
 {
-
-    //externs important dont delete or i will smite you
     extern std::vector<unsigned char> GetRawBytes();
     extern bool SetRawBytes(std::vector<unsigned char>);
 
@@ -41,12 +39,11 @@ namespace SmartTDB //smart table database
             extern uint32_t BytesToInt(const std::vector<uint8_t>& bytes);
             std::vector<uint8_t> IntToBytes(uint32_t value)
             {
-                std::vector<uint8_t> bytes;
-                while (value > 0)
-                {
-                    bytes.push_back(static_cast<uint8_t>(value & 0xFF));
-                    value >>= 8;
-                }
+                std::vector<uint8_t> bytes(4);
+                bytes[0] = static_cast<uint8_t>(value & 0xFF);
+                bytes[1] = static_cast<uint8_t>((value >> 8) & 0xFF);
+                bytes[2] = static_cast<uint8_t>((value >> 16) & 0xFF);
+                bytes[3] = static_cast<uint8_t>((value >> 24) & 0xFF);
                 return bytes;
             }
             uint32_t BytesToInt(const std::vector<uint8_t>& bytes)
@@ -95,19 +92,18 @@ namespace SmartTDB //smart table database
 
         void ReplaceValue(std::string Name, int value)
         {
-            if (!DoesNameExist(Name)) { return; }
-        
             std::ifstream ifs(FILENAME);
-            if (!ifs) return;
-        
             std::vector<std::string> lines;
             std::string line;
-        
-            while (std::getline(ifs, line))
+
+            if (ifs)
             {
-                lines.push_back(line);
+                while (std::getline(ifs, line))
+                {
+                    lines.push_back(line);
+                }
+                ifs.close();
             }
-            ifs.close();
 
             std::vector<uint8_t> bytes = Bytes::IntToBytes(value);
 
@@ -118,38 +114,45 @@ namespace SmartTDB //smart table database
                 {
                     std::ostringstream oss;
                     oss << Name << "||";
-                
                     for (size_t j = 0; j < bytes.size(); ++j)
                     {
                         oss << static_cast<int>(bytes[j]);
                         if (j < bytes.size() - 1)
                             oss << ",";
                     }
-                
                     lines[i] = oss.str();
                     replaced = true;
                     break;
                 }
             }
-        
-            if (!replaced) return;
+
+            if (!replaced)
+            {
+                std::ostringstream oss;
+                oss << Name << "||";
+                for (size_t j = 0; j < bytes.size(); ++j)
+                {
+                    oss << static_cast<int>(bytes[j]);
+                    if (j < bytes.size() - 1)
+                        oss << ",";
+                }
+                lines.push_back(oss.str());
+            }
 
             std::ofstream ofs(FILENAME, std::ios::trunc);
             if (!ofs) return;
-        
-            for (std::string l : lines)
+
+            for (size_t i = 0; i < lines.size(); ++i)
             {
-                ofs << l << "\n";
+                ofs << lines[i] << "\n";
             }
-        
+
             ofs.close();
         }
-
 
         bool DoesNameExist(std::string Name)
         {
             std::ifstream ifs(SmartTDB::FILENAME);
-
             for (std::string line; std::getline(ifs ,line); ) {
                 if (line.rfind(Name + "||", 0) == 0)
                 {
@@ -293,3 +296,4 @@ namespace SmartTDB //smart table database
         }
     }
 }
+
