@@ -30,6 +30,7 @@ namespace SmartTDB //smart table database
 
     extern bool Declared;
     extern std::string FILENAME;
+    std::string FILENAME = "";
     extern bool DeclareDBname(std::string filename);
 
     namespace UTILS
