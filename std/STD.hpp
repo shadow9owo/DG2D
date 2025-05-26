@@ -183,8 +183,6 @@ namespace SmartTDB //smart table database
         {
             return INT32_MAX;
         }
-
-        return;
     }
 
     unsigned char GetByteValue(std::string Name)
