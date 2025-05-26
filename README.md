@@ -2,7 +2,7 @@
 DOOMGAMES 2D TOOLKIT (FOR RAYLIB!)
 <br>
 <br>
-c++ 11
+requirements : c++ 11
 <br>
 <br>
 components :<br>
