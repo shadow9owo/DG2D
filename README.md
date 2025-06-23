@@ -1,5 +1,5 @@
-# DG2D
-DOOMGAMES 2D TOOLKIT (FOR SDL2!)
+# DG2D 
+DoomGames2D TOOLKIT (FOR SDL2!)
 <br>
 <br>
 components :<br>
