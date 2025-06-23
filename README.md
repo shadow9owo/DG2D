@@ -12,7 +12,7 @@ features :
 
 to do:
 - spritesheet support
-- ui for setting up spritesheets
+- UI for setting up spritesheets
 - tilemap support
 - math utils
 - linux support , web support
