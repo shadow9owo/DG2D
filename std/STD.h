@@ -49,7 +49,7 @@ namespace SmartTDB
             uint32_t BytesToInt(const std::vector<uint8_t>& bytes)
             {
                 uint32_t value = 0;
-                for (size_t i = 0; i < bytes.size(); ++i) {
+                for (size_t i = 0; i < bytes.size() && i < 4; ++i) { // only 4 bytes for int32
                     value |= static_cast<uint32_t>(bytes[i]) << (8 * i);
                 }
                 return value;
@@ -57,9 +57,9 @@ namespace SmartTDB
         }
         extern bool DoesNameExist(std::string Name);
         extern void ReplaceValue(std::string Name, int value);
-        extern int LoadValue(std::string Name);
+        extern std::vector<int> LoadValue(std::string Name);
 
-        int LoadValue(std::string Name)
+        std::vector<int> LoadValue(std::string Name)
         {
             std::ifstream fi(SmartTDB::FILENAME);
             std::string line;
@@ -79,23 +79,29 @@ namespace SmartTDB
                         bytes.push_back(static_cast<uint8_t>(std::stoi(byteString.substr(start, end - start))));
                         start = end + 1;
                     }
-
                     if (start < byteString.size())
                         bytes.push_back(static_cast<uint8_t>(std::stoi(byteString.substr(start))));
                 
-                    return SmartTDB::UTILS::Bytes::BytesToInt(bytes);
+                    std::vector<int> result;
+                    for (size_t i = 0; i + 3 < bytes.size(); i += 4)
+                    {
+                        std::vector<uint8_t> chunk(bytes.begin() + i, bytes.begin() + i + 4);
+                        result.push_back(SmartTDB::UTILS::Bytes::BytesToInt(chunk));
+                    }
+                
+                    return result;
                 }
             }
-        
-            return -1;
+            return {}; // no such name found
         }
 
-        void ReplaceValue(std::string Name, int value)
+
+        void ReplaceValue(std::string Name, const int* values, size_t count)
         {
             std::ifstream ifs(FILENAME);
             std::vector<std::string> lines;
             std::string line;
-
+        
             if (ifs)
             {
                 while (std::getline(ifs, line))
@@ -104,9 +110,15 @@ namespace SmartTDB
                 }
                 ifs.close();
             }
-
-            std::vector<uint8_t> bytes = Bytes::IntToBytes(value);
-
+        
+            // Accumulate all bytes from all ints
+            std::vector<uint8_t> allBytes;
+            for (size_t i = 0; i < count; ++i)
+            {
+                std::vector<uint8_t> bytes = Bytes::IntToBytes(static_cast<uint32_t>(values[i]));
+                allBytes.insert(allBytes.end(), bytes.begin(), bytes.end());
+            }
+        
             bool replaced = false;
             for (size_t i = 0; i < lines.size(); ++i)
             {
@@ -114,10 +126,10 @@ namespace SmartTDB
                 {
                     std::ostringstream oss;
                     oss << Name << "||";
-                    for (size_t j = 0; j < bytes.size(); ++j)
+                    for (size_t j = 0; j < allBytes.size(); ++j)
                     {
-                        oss << static_cast<int>(bytes[j]);
-                        if (j < bytes.size() - 1)
+                        oss << static_cast<int>(allBytes[j]);
+                        if (j < allBytes.size() - 1)
                             oss << ",";
                     }
                     lines[i] = oss.str();
@@ -125,28 +137,28 @@ namespace SmartTDB
                     break;
                 }
             }
-
+        
             if (!replaced)
             {
                 std::ostringstream oss;
                 oss << Name << "||";
-                for (size_t j = 0; j < bytes.size(); ++j)
+                for (size_t j = 0; j < allBytes.size(); ++j)
                 {
-                    oss << static_cast<int>(bytes[j]);
-                    if (j < bytes.size() - 1)
+                    oss << static_cast<int>(allBytes[j]);
+                    if (j < allBytes.size() - 1)
                         oss << ",";
                 }
                 lines.push_back(oss.str());
             }
-
+        
             std::ofstream ofs(FILENAME, std::ios::trunc);
             if (!ofs) return;
-
-            for (size_t i = 0; i < lines.size(); ++i)
+        
+            for (const auto& l : lines)
             {
-                ofs << lines[i] << "\n";
+                ofs << l << "\n";
             }
-
+        
             ofs.close();
         }
 
@@ -180,7 +192,7 @@ namespace SmartTDB
         if (!UTILS::DoesNameExist(Name)) return 0;
         try
         {
-            int a = UTILS::LoadValue(Name);
+            int a = UTILS::LoadValue(Name).at(0);
             return a;
         }
         catch(const std::exception& e)
@@ -195,7 +207,7 @@ namespace SmartTDB
         if (!UTILS::DoesNameExist(Name)) return 0;
         try
         {
-            unsigned char a = UTILS::LoadValue(Name);
+            unsigned char a = UTILS::LoadValue(Name).at(0);
             return a;
         }
         catch(const std::exception& e)
@@ -210,7 +222,7 @@ namespace SmartTDB
         if (!UTILS::DoesNameExist(Name)) return 0;
         try
         {
-            short a = UTILS::LoadValue(Name);
+            short a = UTILS::LoadValue(Name).at(0);
             return a;
         }
         catch(const std::exception& e)
