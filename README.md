@@ -14,3 +14,4 @@ to do:
 - spritesheet support
 - tilemap support
 - math utils
+- linux support , web support
