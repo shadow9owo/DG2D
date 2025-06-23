@@ -1,5 +1,5 @@
 # DG2D
-DOOMGAMES 2D TOOLKIT (FOR RAYLIB!)
+DOOMGAMES 2D TOOLKIT (FOR SDL2!)
 <br>
 <br>
 requirements : c++ 11
