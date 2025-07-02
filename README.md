@@ -17,4 +17,4 @@ to do:
 - UI for setting up spritesheets
 - tilemap support
 - math utils
-- linux support , web support , windows xp support
+- web support , windows xp support
