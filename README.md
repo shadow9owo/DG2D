@@ -10,6 +10,7 @@ version 1.0.7
 
 features :
 - save file support
+- event wrapper
 
 to do:
 - spritesheet support
