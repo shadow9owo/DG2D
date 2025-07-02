@@ -4,6 +4,7 @@ DoomGames2D TOOLKIT (FOR SDL2!)
 <br>
 components :<br>
 -  Smart Table DB (STD) - simple plug n play save system for c++
+-  SDL event wrapper
 
 version 1.0.6
 
