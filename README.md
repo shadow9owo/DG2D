@@ -6,7 +6,7 @@ components :<br>
 -  Smart Table DB (STD) - simple plug n play save system for c++
 -  SDL event wrapper
 
-version 1.0.6
+version 1.0.7
 
 features :
 - save file support
