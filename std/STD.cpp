@@ -75,7 +75,7 @@ namespace SmartTDB
         }
 
 
-        void ReplaceValue(std::string Name, const int* values, size_t count)
+        void ReplaceValue(std::string Name, const int* values, size_t count = 1)
         {
             std::ifstream ifs(FILENAME);
             std::vector<std::string> lines;
