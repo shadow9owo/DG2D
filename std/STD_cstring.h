@@ -17,8 +17,8 @@ namespace SmartTDB
     {
         std::vector<char> a;
         if (!a.empty()) {a.clear();}
-        if (!SmartTDB::Declared) { return false; }
-        if (!SmartTDB::UTILS::DoesNameExist(Name)) { return false; }
+        if (!SmartTDB::Declared) { return ""; }
+        if (!SmartTDB::UTILS::DoesNameExist(Name)) { return ""; }
         if (!SmartTDB::UTILS::LoadValue(Name).empty())
         {
             for (unsigned char b : SmartTDB::UTILS::LoadValue(Name))
@@ -35,7 +35,7 @@ namespace SmartTDB
         if (!SmartTDB::UTILS::DoesNameExist(Name)) return false;
 
         size_t length = 0;
-        std::array<int, UINT8_MAX> intArray = DG2D::ConvertCharArrayToIntArray(value, length);
+        std::array<int, INT16_MAX> intArray = DG2D::ConvertCharArrayToIntArray(value, length);
 
         SmartTDB::UTILS::ReplaceValue(Name, intArray.data(), length);
 
