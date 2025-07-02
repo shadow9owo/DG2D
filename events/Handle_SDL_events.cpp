@@ -14,7 +14,7 @@ namespace DG2D
             switch (e.type)
             {
                 case SDL_QUIT:
-                    events.emplace_back(quit, 0);
+                    events.emplace_back(quit, none);
                     break;
 
                 case SDL_KEYDOWN:
@@ -34,7 +34,7 @@ namespace DG2D
                     break;
 
                 default:
-                    events.emplace_back(none, 0);
+                    events.emplace_back(none, none);
                     break;
             }
         }
