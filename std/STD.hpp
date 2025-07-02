@@ -26,7 +26,7 @@ namespace SmartTDB
             extern uint32_t BytesToInt(const std::vector<uint8_t>& bytes);
         }
         extern bool DoesNameExist(std::string Name);
-        extern void ReplaceValue(std::string Name, int value,size_t count = 1);
+        extern void ReplaceValue(std::string Name, int value,size_t count);
         extern std::vector<int> LoadValue(std::string Name);
     }
 }
