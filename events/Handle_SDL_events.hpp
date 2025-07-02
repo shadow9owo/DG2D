@@ -9,10 +9,11 @@ enum SDL_EVENTS
     keydown,
     keyup,
     mousedown,
-    mouseup
+    mouseup,
+    mousemove
 };
 
 namespace DG2D
 {
-    extern std::vector<std::pair<SDL_EVENTS, int>> HandleEvents();
+    extern std::vector<std::pair<SDL_EVENTS, std::vector<int>>> HandleEvents();
 }
