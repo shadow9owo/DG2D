@@ -15,7 +15,8 @@ features :
 - math utils
 - texture wrapper
 - audio wrapper
-
+- ttf wrapper
+  
 to do:
 - spritesheet support
 - UI for setting up spritesheets
