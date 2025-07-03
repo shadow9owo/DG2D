@@ -5,6 +5,7 @@ DoomGames2D TOOLKIT (FOR SDL2!)
 components :<br>
 -  Smart Table DB (STD) - simple plug n play save system for c++
 -  SDL event wrapper
+-  SDL raylib like texture wrapper
 
 version 1.0.8
 
