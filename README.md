@@ -20,7 +20,7 @@ to do:
 - spritesheet support
 - UI for setting up spritesheets
 - tilemap support
-- web support
+- web support (emscripten)
 
 how to use?
 - git clone repository
