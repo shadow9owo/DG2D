@@ -11,12 +11,12 @@ version 1.0.7
 features :
 - save file support
 - event wrapper
+- math utils
 
 to do:
 - spritesheet support
 - UI for setting up spritesheets
 - tilemap support
-- math utils
 - web support
 
 how to use?
