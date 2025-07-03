@@ -17,4 +17,8 @@ to do:
 - UI for setting up spritesheets
 - tilemap support
 - math utils
-- web support , windows xp support
+- web support
+
+how to use?
+- git clone repository
+- and compile
