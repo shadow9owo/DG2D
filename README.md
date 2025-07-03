@@ -28,4 +28,4 @@ how to use?
 - git clone repository
 - and compile
 
-(requires SDL2,SDL_image,SDL_mixer)
+(requires SDL2,SDL_image,SDL_mixer,SDL_ttf)
