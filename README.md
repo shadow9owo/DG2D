@@ -14,6 +14,8 @@ features :
 - math utils
 
 to do:
+- texture wrapper
+- audio wrapper
 - spritesheet support
 - UI for setting up spritesheets
 - tilemap support
