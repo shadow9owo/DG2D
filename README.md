@@ -22,6 +22,7 @@ to do:
 - UI for setting up spritesheets
 - tilemap support
 - web support (emscripten)
+- tiled integration
 
 how to use?
 - git clone repository
