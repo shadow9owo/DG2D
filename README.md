@@ -6,15 +6,15 @@ components :<br>
 -  Smart Table DB (STD) - simple plug n play save system for c++
 -  SDL event wrapper
 
-version 1.0.7
+version 1.0.8
 
 features :
 - save file support
 - event wrapper
 - math utils
+- texture wrapper
 
 to do:
-- texture wrapper
 - audio wrapper
 - spritesheet support
 - UI for setting up spritesheets
