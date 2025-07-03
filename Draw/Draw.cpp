@@ -64,4 +64,32 @@ namespace DG2D
     {
         globalrenderer = renderer;
     }
+
+    void DrawTextureVecI(SDL_Texture *texture,DG2D::Vector2I Pos,DG2D::Vector2I size)
+    {
+        if (!isrenderdeclared()) {std::cout << "ERR RENDERER NOT DECLARED" << std::endl;}
+        
+        SDL_Rect rect;
+        rect.x = Pos.x;
+        rect.y = Pos.y;
+        rect.w = size.x;
+        rect.h = size.y;
+
+        SDL_RenderCopy(globalrenderer, texture, NULL, &rect); 
+        return;
+    }
+
+    void DrawTextureVec(SDL_Texture *texture,DG2D::Vector2I Pos,DG2D::Vector2I size)
+    {
+        if (!isrenderdeclared()) {std::cout << "ERR RENDERER NOT DECLARED" << std::endl;}
+        
+        SDL_Rect rect;
+        rect.x = Pos.x;
+        rect.y = Pos.y;
+        rect.w = size.x;
+        rect.h = size.y;
+
+        SDL_RenderCopy(globalrenderer, texture, NULL, &rect); 
+        return;
+    }
 }
