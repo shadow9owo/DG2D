@@ -15,6 +15,8 @@
 
 namespace SmartTDB
 {
+    std::string FILENAME;
+
     namespace UTILS
     {
         namespace Bytes
@@ -210,24 +212,24 @@ namespace SmartTDB
         }
     }
 
-    void SetIntValue(std::string Name,int value)
+    void SetIntValue(std::string Name,const int *value)
     {
         if (!Declared) {return;}
         UTILS::ReplaceValue(Name,value);
         return;
     }
 
-    void SetByteValue(std::string Name,unsigned char value)
+    void SetByteValue(std::string Name,const unsigned char *value)
     {
         if (!Declared) {return;}
-        UTILS::ReplaceValue(Name,value);
+        UTILS::ReplaceValue(Name,(const int*)value);
         return;
     }
 
-    void SetShortValue(std::string Name,short value)
+    void SetShortValue(std::string Name,const short *value)
     {
         if (!Declared) {return;}
-        UTILS::ReplaceValue(Name,value);
+        UTILS::ReplaceValue(Name,(const int*)value);
         return;
     }
 

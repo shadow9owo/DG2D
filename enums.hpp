@@ -1,5 +1,7 @@
 #pragma once
 
+//https://emscripten.org/docs/porting/multimedia_and_graphics/OpenGL-support.html
+
 enum SDL_EVENTS
 {
     none = 0,
@@ -9,4 +11,14 @@ enum SDL_EVENTS
     mousedown,
     mouseup,
     mousemove
+};
+
+enum SDL_PLATFORMS
+{
+    WIN_NT,
+    UNIX_LINUX,
+    MACOS,
+    IOS,
+    ANDROID,
+    UNKNOWN
 };

@@ -32,9 +32,9 @@ namespace SmartTDB
         if (!SmartTDB::UTILS::DoesNameExist(Name)) return false;
 
         size_t length = 0;
-        std::vector<int> intArray = DG2D::ConvertCharArrayToIntArray(value, length);
+        std::vector<int> intArray = DG2D::ConvertCharArrayToIntArray(value);
 
-        SmartTDB::UTILS::ReplaceValue(Name, *intArray.data(), length);
+        SmartTDB::UTILS::ReplaceValue(Name, intArray.data(), length);
 
         return true;
     }
