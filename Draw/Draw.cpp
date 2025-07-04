@@ -25,6 +25,13 @@ namespace DG2D
         SDL_RenderDrawLine(globalrenderer,x1,y1,x2,y2);
         return;
     }
+    void DrawPixel(int x1,int y1,SDL_Color color)
+    {
+        if (!isrenderdeclared()) {std::cout << "ERR RENDERER NOT DECLARED" << std::endl;}
+        SDL_SetRenderDrawColor(globalrenderer,color.r,color.g,color.b,color.a);
+        SDL_RenderDrawLine(globalrenderer,x1,y1,x1,y1);
+        return;
+    }
     void DrawLineVecI(DG2D::Vector2I start,DG2D::Vector2I end,SDL_Color color)
     {
         if (!isrenderdeclared()) {std::cout << "ERR RENDERER NOT DECLARED" << std::endl;}
