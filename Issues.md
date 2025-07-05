@@ -1,1 +1,1 @@
-none yet
+- not sure how i will port this project to windows since the gnu compiler works differently on the nt kernel but in the worst case scenario il compile with msvc
