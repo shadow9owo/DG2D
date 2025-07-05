@@ -2,9 +2,7 @@
 
 - .INI wrapper - simple but worth it
 
-- I want to rely way less on sdl2 right now i am relying on it a lot which will most likely not change much but i want to only rely only on it as needed. I dont want to have everything be sdl dependent which will most likely change in future as of right now were in really early stages of development 
+- I want to rely way less on sdl2 right now i am relying on it too much and thats bad either way i want to cut down on dependencies 
 
-- Late in development i want to fork this project and actually turn this into an engine using qt6 all in one
-
-QCodeEditor (code editor), Tiled like level editor, debugger , basic local package manager that lets you disable and enable components
+- Late in development i want to fork this project and actually turn this into an all in one game engine using qt6 ,QCodeEditor (code editor), Tiled like level editor, debugger , basic local package manager that lets you disable and enable components
 
