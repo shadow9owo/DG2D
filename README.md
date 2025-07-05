@@ -24,6 +24,8 @@ to do:
 - web support (emscripten)
 - tiled integration
 
+more in Ideas.md
+
 how to use?
 - git clone repository
 - and compile
