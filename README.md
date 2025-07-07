@@ -7,7 +7,7 @@ components :<br>
 -  SDL event wrapper
 -  SDL raylib like texture wrapper
 
-version 1.0.8
+version 1.0.9
 
 features :
 - save file support
@@ -16,13 +16,15 @@ features :
 - texture wrapper
 - audio wrapper
 - ttf wrapper
+- ini wrapper
+- deltatime
   
 to do:
 - spritesheet support
 - UI for setting up spritesheets
 - tilemap support
 - web support (emscripten)
-- tiled integration
+- tiled integration or equivalent
 
 more in Ideas.md
 
