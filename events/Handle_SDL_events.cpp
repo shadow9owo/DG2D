@@ -5,9 +5,9 @@
 
 namespace DG2D
 {
-    std::vector<std::pair<SDL_EVENTS, std::vector<int>>> HandleEvents()
+    std::vector<DG2D::GLOBALS::Event> HandleEvents()
     {
-        std::vector<std::pair<SDL_EVENTS, std::vector<int>>> events;
+        std::vector<DG2D::GLOBALS::Event> events;
         SDL_Event e;
         int x, y;
 

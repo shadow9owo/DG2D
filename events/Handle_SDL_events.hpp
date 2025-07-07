@@ -2,8 +2,9 @@
 #include <iostream>
 #include <vector>
 #include "../enums.hpp"
+#include "../globals.hpp"
 
 namespace DG2D
 {
-    extern std::vector<std::pair<SDL_EVENTS, std::vector<int>>> HandleEvents();
+    extern std::vector<DG2D::GLOBALS::Event> HandleEvents();
 }
