@@ -20,6 +20,8 @@ features :
 - deltatime
   
 to do:
+- re do audio wrappers (improve)
+- write actual documentation
 - spritesheet support
 - UI for setting up spritesheets
 - tilemap support
