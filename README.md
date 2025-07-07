@@ -17,7 +17,8 @@ features :
 - ini wrapper
 - deltatime
   
-to do:
+to do (in no specific order) :
+- UI wrappers
 - re do audio wrappers (improve)
 - write actual documentation
 - spritesheet support
