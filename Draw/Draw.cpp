@@ -1,102 +1,104 @@
-#include <SDL2/SDL_render.h>
+#include <SDL2/SDL.h>
 #include "../Math/MathVars.hpp"
 #include "Draw.hpp"
-#include <SDL2/SDL.h>
 #include <iostream>
 
 namespace DG2D
 {
-    SDL_Renderer *globalrenderer = nullptr;
-
-    bool isrenderdeclared()
+    namespace DRAW
     {
-        if (globalrenderer == nullptr)
+        SDL_Renderer *globalrenderer = nullptr;
+        SDL_Texture *globalbuffer = nullptr;
+        bool isrenderdeclared()
         {
-            return false;
-        }else {
-            return true;
+            return (globalrenderer != nullptr && globalbuffer != nullptr);
         }
-    }
-
-    void DrawLine(int x1,int y1,int x2,int y2,SDL_Color color)
-    {
-        if (!isrenderdeclared()) {std::cout << "ERR RENDERER NOT DECLARED" << std::endl;}
-        SDL_SetRenderDrawColor(globalrenderer,color.r,color.g,color.b,color.a);
-        SDL_RenderDrawLine(globalrenderer,x1,y1,x2,y2);
-        return;
-    }
-    void DrawPixel(int x1,int y1,SDL_Color color)
-    {
-        if (!isrenderdeclared()) {std::cout << "ERR RENDERER NOT DECLARED" << std::endl;}
-        SDL_SetRenderDrawColor(globalrenderer,color.r,color.g,color.b,color.a);
-        SDL_RenderDrawLine(globalrenderer,x1,y1,x1,y1);
-        return;
-    }
-    void DrawLineVecI(DG2D::Vector2I start,DG2D::Vector2I end,SDL_Color color)
-    {
-        if (!isrenderdeclared()) {std::cout << "ERR RENDERER NOT DECLARED" << std::endl;}
-        SDL_SetRenderDrawColor(globalrenderer,color.r,color.g,color.b,color.a);
-        SDL_RenderDrawLine(globalrenderer,start.x,start.y,end.x,end.y);
-        return;
-    }
-    void DrawLineVec(DG2D::Vector2 start,DG2D::Vector2 end,SDL_Color color)
-    {
-        if (!isrenderdeclared()) {std::cout << "ERR RENDERER NOT DECLARED" << std::endl;}
-        SDL_SetRenderDrawColor(globalrenderer,color.r,color.g,color.b,color.a);
-        SDL_RenderDrawLine(globalrenderer,start.x,start.y,end.x,end.y);
-        return;
-    }
-    void DrawRectVecI(DG2D::Vector2I Pos,DG2D::Vector2I size,SDL_Color color,bool fill)
-    {
-        if (!isrenderdeclared()) {std::cout << "ERR RENDERER NOT DECLARED" << std::endl;}
-        SDL_Rect rect;
-        rect.x = Pos.x;
-        rect.y = Pos.y;
-        rect.w = size.x;
-        rect.h = size.y;
-
-        SDL_SetRenderDrawColor(globalrenderer,color.r,color.b,color.g,color.a);
-
-        if (fill)
+        void Define_Renderer(SDL_Renderer *renderer)
         {
-            SDL_RenderFillRect(globalrenderer, &rect);
+            globalrenderer = renderer;
         }
-        else 
+        SDL_Texture* CreateRenderTexture(Vector2I windowsize, SDL_Renderer *RendererReference) //returns render texture
         {
-            SDL_RenderDrawRect(globalrenderer,&rect);
+            SDL_Texture* b = SDL_CreateTexture(
+                RendererReference,
+                SDL_PIXELFORMAT_RGBA8888,
+                SDL_TEXTUREACCESS_TARGET,
+                windowsize.x,
+                windowsize.y
+            );
+            return b;
         }
-        return;
-    }
-    void Define_Renderer(SDL_Renderer *renderer)
-    {
-        globalrenderer = renderer;
-    }
+        void GlobalDefineTexture(SDL_Texture *texture)
+        {
+            globalbuffer = texture;
+        }
 
-    void DrawTextureVecI(SDL_Texture *texture,DG2D::Vector2I Pos,DG2D::Vector2I size)
-    {
-        if (!isrenderdeclared()) {std::cout << "ERR RENDERER NOT DECLARED" << std::endl;}
+        void StartDraw(SDL_Color clearcolor)
+        {
+            if (!isrenderdeclared()) 
+            {
+                std::cout << "ERR: RENDERER OR BUFFER NOT DECLARED\n"; 
+                return;
+            }
+            SDL_SetRenderTarget(globalrenderer, globalbuffer);
+            SDL_SetRenderDrawColor(globalrenderer, clearcolor.r,clearcolor.g,clearcolor.b,clearcolor.a); 
+            SDL_RenderClear(globalrenderer);
+        }
         
-        SDL_Rect rect;
-        rect.x = Pos.x;
-        rect.y = Pos.y;
-        rect.w = size.x;
-        rect.h = size.y;
+        void EndDraw()
+        {
+            if (!isrenderdeclared()) 
+            {
+                std::cout << "ERR: RENDERER OR BUFFER NOT DECLARED\n"; 
+                return;
+            }
+            SDL_SetRenderTarget(globalrenderer, nullptr);
+            SDL_RenderCopy(globalrenderer, globalbuffer, nullptr, nullptr);
+        }
 
-        SDL_RenderCopy(globalrenderer, texture, NULL, &rect); 
-        return;
-    }
-
-    void DrawTextureVec(SDL_Texture *texture,DG2D::Vector2I Pos,DG2D::Vector2I size)
-    {
-        if (!isrenderdeclared()) {std::cout << "ERR RENDERER NOT DECLARED" << std::endl;}
-        
-        SDL_Rect rect;
-        rect.x = Pos.x;
-        rect.y = Pos.y;
-        rect.w = size.x;
-        rect.h = size.y;
-
-        SDL_RenderCopy(globalrenderer, texture, NULL, &rect); 
-        return;
+        void DrawLine(int x1, int y1, int x2, int y2, SDL_Color color)
+        {
+            if (!isrenderdeclared()) { std::cout << "ERR: RENDERER OR BUFFER NOT DECLARED\n"; return; }
+            SDL_SetRenderTarget(globalrenderer, globalbuffer);
+            SDL_SetRenderDrawColor(globalrenderer, color.r, color.g, color.b, color.a);
+            SDL_RenderDrawLine(globalrenderer, x1, y1, x2, y2);
+            SDL_SetRenderTarget(globalrenderer, nullptr);
+        }
+        void DrawLineVecI(DG2D::Vector2I start, DG2D::Vector2I end, SDL_Color color)
+        {
+            DrawLine(start.x, start.y, end.x, end.y, color);
+        }
+        void DrawLineVec(DG2D::Vector2 start, DG2D::Vector2 end, SDL_Color color)
+        {
+            DrawLine((int)(start.x),(int)(start.y),(int)(end.x),(int)(end.y),color);
+        }
+        void DrawRectVecI(DG2D::Vector2I Pos, DG2D::Vector2I size, SDL_Color color, bool fill)
+        {
+            if (!isrenderdeclared()) { std::cout << "ERR: RENDERER OR BUFFER NOT DECLARED\n"; return; }
+            SDL_SetRenderTarget(globalrenderer, globalbuffer);
+            SDL_Rect rect = { Pos.x, Pos.y, size.x, size.y };
+            SDL_SetRenderDrawColor(globalrenderer, color.r, color.g, color.b, color.a);
+            if (fill)
+            {
+                SDL_RenderFillRect(globalrenderer, &rect);
+            }
+            else
+            {
+                SDL_RenderDrawRect(globalrenderer, &rect);
+            }
+            SDL_SetRenderTarget(globalrenderer, nullptr);
+        }
+        void DrawTextureVecI(SDL_Texture *texture, DG2D::Vector2I Pos, DG2D::Vector2I size)
+        {
+            if (!isrenderdeclared()) { std::cout << "ERR: RENDERER OR BUFFER NOT DECLARED\n"; return; }
+            SDL_SetRenderTarget(globalrenderer, globalbuffer);
+            SDL_Rect rect = { Pos.x, Pos.y, size.x, size.y };
+            SDL_RenderCopy(globalrenderer, texture, nullptr, &rect);
+            SDL_SetRenderTarget(globalrenderer, nullptr);
+        }
+        void DrawTextureVec(SDL_Texture *texture, DG2D::Vector2I Pos, DG2D::Vector2I size)
+        {
+            DrawTextureVecI(texture, Pos, size);
+        }
     }
 }

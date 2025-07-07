@@ -3,5 +3,8 @@
 
 namespace DG2D
 {
-    extern void DrawTTF(TTF_Font* font,std::string content);
+    namespace Font
+    {
+        extern void DrawTTF(TTF_Font* font,std::string content);
+    }
 }
