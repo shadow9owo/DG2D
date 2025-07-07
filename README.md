@@ -33,3 +33,6 @@ how to use?
 - and compile
 
 (requires SDL2,SDL_image,SDL_mixer,SDL_ttf)
+
+how to enable debugging
+- compile with the -DDEBUG flag set to 1 and then the utils.cpp isdebugbuild class will return true and affected functions will log data
