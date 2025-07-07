@@ -7,7 +7,7 @@ components :<br>
 -  SDL event wrapper
 -  SDL raylib like texture wrapper
 
-version 1.0.9
+version pre alpha 1.0.9
 
 features :
 - save file support
