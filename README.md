@@ -1,4 +1,4 @@
-# DG2D 
+# DG2D | pre alpha 1.0.9
 DoomGames2D TOOLKIT (FOR SDL2!)
 <br>
 <br>
@@ -6,8 +6,6 @@ components :<br>
 -  Smart Table DB (STD) - simple plug n play save system for c++ [DEPRECATED!!!!]
 -  SDL event wrapper
 -  SDL raylib like texture wrapper
-
-# version pre alpha 1.0.9
 
 features :
 - save file support
