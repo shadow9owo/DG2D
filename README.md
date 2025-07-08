@@ -1,4 +1,4 @@
-# DG2D | pre alpha 1.0.9
+# DG2D | pre alpha 1.1
 DoomGames2D TOOLKIT (FOR SDL2!)
 <br>
 <br>
