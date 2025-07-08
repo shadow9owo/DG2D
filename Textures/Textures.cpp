@@ -8,7 +8,7 @@ namespace DG2D
 {
     namespace TEXTURE
     {
-        SDL_Texture* Load_Texture(std::string path)
+        SDL_Texture* Load_Texture(std::string& path)
         {
             if (!DG2D::DRAW::isrenderdeclared()) {std::cout << "ERR RENDERER NOT DECLARED" << std::endl;}
             return IMG_LoadTexture(DG2D::DRAW::globalrenderer,path.c_str());

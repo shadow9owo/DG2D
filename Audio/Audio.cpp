@@ -2,10 +2,28 @@
 #include <string>
 #include "Audio.hpp"
 
+extern "C"
+{
+#include "../addons/beep/beep.h"
+}
+
 namespace DG2D
 {
     namespace AUDIO
     {
+        bool Init(int freq = 44100, Uint16 format = MIX_DEFAULT_FORMAT, int channels = 2, int chunksize = 2048, int numSFXChannels = 32)
+        {
+            if (Mix_OpenAudio(freq, format, channels, chunksize) == -1) {
+                return false;
+            }
+            Mix_AllocateChannels(numSFXChannels);
+            return true;
+        }
+        void Shutdown()
+        {
+            Mix_CloseAudio();
+        }
+
         Mix_Chunk* LoadSFX(std::string path)
         {
             return Mix_LoadWAV(path.c_str());
@@ -15,12 +33,38 @@ namespace DG2D
         {
             return Mix_LoadMUS(path.c_str());
         }
+
+        int Beep(int frequency, int duration)
+        {
+            return beep(frequency,duration);
+        }
     
         void DestroySFX(Mix_Chunk* chunk)
         {
             if (chunk) {
                 Mix_FreeChunk(chunk);
             }
+        }
+
+        void SetSFXVolume(int volume)
+        {
+            Mix_Volume(-1, volume);
+        }
+    
+        void SetSFXVolume(Mix_Chunk* chunk, int volume)
+        {
+            if (chunk)
+                Mix_VolumeChunk(chunk, volume);
+        }
+    
+        void SetChannelVolume(int channel, int volume)
+        {
+            Mix_Volume(channel, volume);
+        }
+    
+        void SetMusicVolume(int volume)
+        {
+            Mix_VolumeMusic(volume);
         }
     
         void DestroyMusic(Mix_Music* music)
