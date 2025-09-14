@@ -22,3 +22,9 @@ enum SDL_PLATFORMS
     ANDROID,
     UNKNOWN
 };
+
+enum SpecialSaveFileSymbols : signed char {
+    Newline = -1,
+    Separator = -2,
+    EndOfFile = -3 
+};
