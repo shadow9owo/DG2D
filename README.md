@@ -16,14 +16,14 @@ features :
 - ttf wrapper
 - ini wrapper
 - deltatime
-  
+- web support (emscripten) thanks to sdl2
+
 to do (in no specific order) :
 - UI wrappers
 - write actual documentation
 - spritesheet support
 - UI for setting up spritesheets
 - tilemap support
-- web support (emscripten)
 - tiled integration or equivalent
 
 more in Ideas.md
