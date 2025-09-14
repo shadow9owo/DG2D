@@ -27,7 +27,7 @@ more in ``Ideas.md``
 
 ## how to use?
 - ``git clone`` the repository
-- and compile (make Makefile)
+- compile ``make Makefile``
 
 **requires SDL2,SDL_image,SDL_mixer,SDL_ttf**
 
