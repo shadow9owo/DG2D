@@ -6,6 +6,7 @@ components :<br>
 -  Smart Table DB (STD) - simple plug n play save system for c++ with gzip capabilities
 -  SDL event wrapper
 -  SDL raylib like texture wrapper
+-  Launcher (https://github.com/shadow9owo/Universal-Game-Launcher)
 
 features :
 - save file support
