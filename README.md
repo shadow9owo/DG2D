@@ -26,7 +26,7 @@ DoomGames2D TOOLKIT (FOR SDL2!)
 more in ``Ideas.md``
 
 ## how to use?
-- git clone repository
+- ``git clone`` the repository
 - and compile (make Makefile)
 
 **requires SDL2,SDL_image,SDL_mixer,SDL_ttf**
