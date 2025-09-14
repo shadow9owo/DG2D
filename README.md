@@ -1,14 +1,13 @@
 # DG2D | pre alpha 1.1
 DoomGames2D TOOLKIT (FOR SDL2!)
-<br>
-<br>
-components :<br>
+
+## components :<br>
 -  Smart Table DB (STD) - simple plug n play save system for c++ with gzip capabilities
 -  SDL event wrapper
 -  SDL raylib like texture wrapper
 -  Launcher - https://github.com/shadow9owo/Universal-Game-Launcher
 
-features :
+## features :
 - save file support (STD,ini)
 - sdl2 event wrapper
 - math utils
@@ -17,7 +16,7 @@ features :
 - ttf wrapper
 - web support (emscripten) thanks to sdl2
 
-to do (in no specific order) :
+## to do (in no specific order) :
 - UI wrappers
 - write actual documentation
 - spritesheet support
@@ -26,7 +25,7 @@ to do (in no specific order) :
 
 more in ``Ideas.md``
 
-how to use?
+## how to use?
 - git clone repository
 - and compile (make Makefile)
 
