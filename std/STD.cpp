@@ -10,8 +10,8 @@ namespace DG2D
 {
     namespace SmartTableDatabase
     {
-        constexpr char savefile_signature[4] = { 'S','T','D','\0' };
-        std::string filename = "untitled.std";
+        static const char savefile_signature[4] = { 'S','T','D','\0' };
+        static std::string filename = "untitled.std";
 
         bool preparefile()
         {
@@ -39,7 +39,8 @@ namespace DG2D
 
         void writeSpecialSaveFileSymbols(std::ofstream& file, SpecialSaveFileSymbols m)
         {
-            file.write(reinterpret_cast<const char*>(&m), sizeof(m));
+            signed char mc = static_cast<signed char>(m); // C++11 safe
+            file.write(reinterpret_cast<const char*>(&mc), sizeof(mc));
         }
 
         void writestring(std::ofstream& file, const std::string& str)
@@ -65,10 +66,9 @@ namespace DG2D
         {
             preparefile();
             std::ifstream file(filename, std::ios::binary);
-            file.seekg(4);
+            file.seekg(4); // skip signature
 
             std::string buffer;
-            std::string foundValue;
             char c;
 
             while (file.get(c))
@@ -90,8 +90,9 @@ namespace DG2D
                             {
                                 if (v < 0)
                                 {
-                                    if (static_cast<SpecialSaveFileSymbols>(v) == SpecialSaveFileSymbols::Newline ||
-                                        static_cast<SpecialSaveFileSymbols>(v) == SpecialSaveFileSymbols::EndOfFile)
+                                    SpecialSaveFileSymbols mv = static_cast<SpecialSaveFileSymbols>(v);
+                                    if (mv == SpecialSaveFileSymbols::Newline ||
+                                        mv == SpecialSaveFileSymbols::EndOfFile)
                                     {
                                         return value;
                                     }
