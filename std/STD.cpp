@@ -5,6 +5,8 @@
 #include <cstdint>
 #include <cstring>
 #include "../enums.hpp"
+#include "../addons/gzip/compress.hpp"
+#include "../addons/gzip/decompress.hpp"
 
 namespace DG2D
 {
@@ -39,7 +41,7 @@ namespace DG2D
 
         void writeSpecialSaveFileSymbols(std::ofstream& file, SpecialSaveFileSymbols m)
         {
-            signed char mc = static_cast<signed char>(m); // C++11 safe
+            signed char mc = static_cast<signed char>(m);
             file.write(reinterpret_cast<const char*>(&mc), sizeof(mc));
         }
 
@@ -56,7 +58,13 @@ namespace DG2D
             writeSpecialSaveFileSymbols(file, SpecialSaveFileSymbols::Newline);
             writestring(file, Key);
             writeSpecialSaveFileSymbols(file, SpecialSaveFileSymbols::Separator);
-            writestring(file, Value);
+
+            std::string compressed = gzip::compress(Value.data(), Value.size());
+
+            uint32_t size = static_cast<uint32_t>(compressed.size());
+            file.write(reinterpret_cast<const char*>(&size), sizeof(size));
+
+            file.write(compressed.data(), compressed.size());
 
             file.close();
             return true;
@@ -84,21 +92,14 @@ namespace DG2D
                     {
                         if (buffer == Key)
                         {
-                            std::string value;
-                            char v;
-                            while (file.get(v))
-                            {
-                                if (v < 0)
-                                {
-                                    SpecialSaveFileSymbols mv = static_cast<SpecialSaveFileSymbols>(v);
-                                    if (mv == SpecialSaveFileSymbols::Newline ||
-                                        mv == SpecialSaveFileSymbols::EndOfFile)
-                                    {
-                                        return value;
-                                    }
-                                }
-                                value.push_back(v);
-                            }
+                            uint32_t size = 0;
+                            file.read(reinterpret_cast<char*>(&size), sizeof(size));
+
+                            std::string compressed(size, '\0');
+                            file.read(&compressed[0], size);
+
+                            std::string value = gzip::decompress(compressed.data(), compressed.size());
+                            return value;
                         }
                         buffer.clear();
                     }
