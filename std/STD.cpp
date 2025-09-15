@@ -51,29 +51,102 @@ namespace DG2D {
       file.write(str.data(), str.size());
     }
 
-    bool SetValue(std::string Key, std::string Value) {
-      preparefile();
+    bool SetValue(std::string Key, std::string Value)
+{
+    preparefile();
 
-      bool keyExists = HasKey(Key);
-
-      std::ofstream file(filename, std::ios::binary | std::ios::app);
-      if (!file.is_open())
+    std::ifstream infile(filename, std::ios::binary);
+    if (!infile.is_open())
         return false;
 
-      writeSpecialSaveFileSymbols(file, SpecialSaveFileSymbols::Newline);
-      writestring(file, Key);
-      writeSpecialSaveFileSymbols(file, SpecialSaveFileSymbols::Separator);
+    std::vector<char> oldData((std::istreambuf_iterator<char>(infile)),
+                               std::istreambuf_iterator<char>());
+    infile.close();
 
-      std::string compressed = gzip::compress(Value.data(), Value.size());
+    std::vector<char> newData;
+    newData.insert(newData.end(), oldData.begin(), oldData.begin() + 4);
 
-      uint32_t size = static_cast < uint32_t > (compressed.size());
-      file.write(reinterpret_cast <
-        const char * > ( & size), sizeof(size));
-      file.write(compressed.data(), compressed.size());
+    std::string buffer;
+    size_t i = 4;
+    bool replaced = false;
 
-      file.close();
-      return true;
+    while (i < oldData.size())
+    {
+        char c = oldData[i++];
+        if (c < 0)
+        {
+            SpecialSaveFileSymbols m = static_cast<SpecialSaveFileSymbols>(c);
+            if (m == SpecialSaveFileSymbols::Newline)
+            {
+                buffer.clear();
+                newData.push_back(c);
+            }
+            else if (m == SpecialSaveFileSymbols::Separator)
+            {
+                if (buffer == Key && !replaced)
+                {
+                    
+                    uint32_t oldSize = *reinterpret_cast<uint32_t*>(&oldData[i]);
+                    i += sizeof(uint32_t) + oldSize;
+
+                     writeSpecialSaveFileSymbols(*reinterpret_cast<std::ofstream*>(&newData), SpecialSaveFileSymbols::Separator);
+                    std::string compressed = gzip::compress(Value.data(), Value.size());
+                    uint32_t newSize = static_cast<uint32_t>(compressed.size());
+
+                     newData.insert(newData.end(),
+                                   reinterpret_cast<char*>(&newSize),
+                                   reinterpret_cast<char*>(&newSize) + sizeof(newSize));
+                     newData.insert(newData.end(), compressed.begin(), compressed.end());
+
+                    replaced = true;
+                    buffer.clear();
+                    continue;
+                }
+                else
+                {
+                    newData.push_back(c);
+
+                    uint32_t oldSize = *reinterpret_cast<uint32_t*>(&oldData[i]);
+                    newData.insert(newData.end(),
+                                   &oldData[i],
+                                   &oldData[i + sizeof(uint32_t) + oldSize]);
+                    i += sizeof(uint32_t) + oldSize;
+                    buffer.clear();
+                }
+            }
+            else if (m == SpecialSaveFileSymbols::EndOfFile)
+            {
+                newData.push_back(c);
+                break;
+            }
+        }
+        else
+        {
+            buffer.push_back(c);
+            newData.push_back(c);
+        }
     }
+
+    if (!replaced)
+    {
+        std::ofstream outfile(filename, std::ios::binary | std::ios::app);
+        writeSpecialSaveFileSymbols(outfile, SpecialSaveFileSymbols::Newline);
+        writestring(outfile, Key);
+        writeSpecialSaveFileSymbols(outfile, SpecialSaveFileSymbols::Separator);
+        std::string compressed = gzip::compress(Value.data(), Value.size());
+        uint32_t size = static_cast<uint32_t>(compressed.size());
+        outfile.write(reinterpret_cast<char*>(&size), sizeof(size));
+        outfile.write(compressed.data(), compressed.size());
+        outfile.close();
+        return true;
+    }
+
+    std::ofstream outfile(filename, std::ios::binary | std::ios::trunc);
+    outfile.write(&newData[0], newData.size());
+    outfile.close();
+
+    return true;
+}
 
     std::string LoadValue(std::string Key) {
       preparefile();
