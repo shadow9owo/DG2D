@@ -54,17 +54,13 @@ namespace DG2D
 {
     preparefile();
 
-    // Step 1: Check if key already exists
     bool keyExists = HasKey(Key);
 
-    // Open file in append mode
     std::ofstream file(filename, std::ios::binary | std::ios::app);
     if (!file.is_open())
         return false;
 
-    // Optional: mark old entry as deleted
-    // Currently we just append new value (LoadValue can be updated to pick the last occurrence)
-
+    
     writeSpecialSaveFileSymbols(file, SpecialSaveFileSymbols::Newline);
     writestring(file, Key);
     writeSpecialSaveFileSymbols(file, SpecialSaveFileSymbols::Separator);
