@@ -18,13 +18,7 @@
 
 namespace DG2D {
   namespace SmartTableDatabase {
-    static
-    const char savefile_signature[4] = {
-      'S',
-      'T',
-      'D',
-      '\0'
-    };
+    static const char savefile_signature[4] = {'S','T','D','\0'};
     static std::string filename = "untitled.std";
 
     bool preparefile() {
