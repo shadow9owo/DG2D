@@ -111,7 +111,7 @@ namespace DG2D
                     buffer.push_back(c);
                 }
             }
-            return "";
+            return nullptr;
         }
 
         bool HasKey(std::string Key)
