@@ -1,31 +1,18 @@
 #include <iostream>
-
 #include <fstream>
-
 #include <string>
-
 #include <vector>
-
 #include <cstdint>
-
 #include <cstring>
-
 #include "../enums.hpp"
-
 #include "../addons/gzip/compress.hpp"
-
 #include "../addons/gzip/decompress.hpp"
+#include "STD.hpp"
 
 namespace DG2D {
   namespace SmartTableDatabase {
-    static
-    const char savefile_signature[4] = {
-      'S',
-      'T',
-      'D',
-      '\0'
-    };
-    static std::string filename = "untitled.std";
+    const char savefile_signature[4] = {'S','T','D','\0'};
+    std::string filename = "untitled.std";
 
     bool preparefile() {
       std::fstream file(filename, std::ios::in | std::ios::binary);
@@ -57,7 +44,7 @@ namespace DG2D {
       file.write(str.data(), str.size());
     }
 
-    bool SetValue(std::string Key, std::string Value) {
+    bool SetValue(std::string Key,std::string Value) {
       preparefile();
 
       std::ifstream infile(filename, std::ios::binary);

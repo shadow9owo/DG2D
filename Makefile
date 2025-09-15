@@ -3,7 +3,12 @@ CXXFLAGS = -std=c++14 -Wall -g
 SDL_CFLAGS := $(shell pkg-config --cflags sdl2 SDL2_image SDL2_mixer SDL2_ttf)
 SDL_LDFLAGS := $(shell pkg-config --libs sdl2 SDL2_image SDL2_mixer SDL2_ttf)
 
-SRC = $(shell find . -type f -name '*.cpp' ! -path './addons/lua-5.4.8/*')
+SRC = $(shell find . -type f -name '*.cpp' \
+    ! -path './addons/lua-5.4.8/*' \
+    ! -path './addons/gzip/*' \
+    ! -path './addons/zlib-1.3.1/*' \
+    ! -path './addons/beep/*')
+	
 OBJ = $(SRC:.cpp=.o)
 
 TARGET = dg2d

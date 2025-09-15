@@ -1,5 +1,5 @@
 #include <cstdlib>
-
+#include <stdint.h>
 namespace gzip {
 
 // These live in gzip.hpp because it doesnt need to use deps.
