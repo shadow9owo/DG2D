@@ -51,24 +51,33 @@ namespace DG2D
         }
 
         bool SetValue(std::string Key, std::string Value)
-        {
-            preparefile();
-            std::ofstream file(filename, std::ios::binary | std::ios::app);
+{
+    preparefile();
 
-            writeSpecialSaveFileSymbols(file, SpecialSaveFileSymbols::Newline);
-            writestring(file, Key);
-            writeSpecialSaveFileSymbols(file, SpecialSaveFileSymbols::Separator);
+    // Step 1: Check if key already exists
+    bool keyExists = HasKey(Key);
 
-            std::string compressed = gzip::compress(Value.data(), Value.size());
+    // Open file in append mode
+    std::ofstream file(filename, std::ios::binary | std::ios::app);
+    if (!file.is_open())
+        return false;
 
-            uint32_t size = static_cast<uint32_t>(compressed.size());
-            file.write(reinterpret_cast<const char*>(&size), sizeof(size));
+    // Optional: mark old entry as deleted
+    // Currently we just append new value (LoadValue can be updated to pick the last occurrence)
 
-            file.write(compressed.data(), compressed.size());
+    writeSpecialSaveFileSymbols(file, SpecialSaveFileSymbols::Newline);
+    writestring(file, Key);
+    writeSpecialSaveFileSymbols(file, SpecialSaveFileSymbols::Separator);
 
-            file.close();
-            return true;
-        }
+    std::string compressed = gzip::compress(Value.data(), Value.size());
+
+    uint32_t size = static_cast<uint32_t>(compressed.size());
+    file.write(reinterpret_cast<const char*>(&size), sizeof(size));
+    file.write(compressed.data(), compressed.size());
+
+    file.close();
+    return true;
+}
 
         std::string LoadValue(std::string Key)
         {
