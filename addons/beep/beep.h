@@ -26,19 +26,22 @@
 
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
 /* On Windows use the built-in Beep() function from <utilapiset.h> */
+#include <windows.h>
 int beep(int freq, int ms) { return Beep(freq, ms); }
 #elif __linux__
 /* On Linux use alsa in synchronous mode, open "default" device in signed 8-bit
  * mode at 8kHz, mono, request for 20ms latency. Device is opened on first call
  * and never closed. */
 #include <unistd.h>
+#include <alsa/asoundlib.h>
+
 int beep(int freq, int ms) {
-  static void *pcm = NULL;
+  static snd_pcm_t *pcm = NULL;
   if (pcm == NULL) {
-    if (snd_pcm_open(&pcm, "default", 0, 0)) {
+    if (snd_pcm_open(&pcm, "default", SND_PCM_STREAM_PLAYBACK, 0)) {
       return -1;
     }
-    snd_pcm_set_params(pcm, 1, 3, 1, 8000, 1, 20000);
+    snd_pcm_set_params(pcm, SND_PCM_FORMAT_U8, SND_PCM_ACCESS_RW_INTERLEAVED, 1, 8000, 1, 20000);
   }
   unsigned char buf[2400];
   long frames;

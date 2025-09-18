@@ -11,7 +11,7 @@ namespace DG2D
 {
     namespace AUDIO
     {
-        bool Init(int freq = 44100, Uint16 format = MIX_DEFAULT_FORMAT, int channels = 2, int chunksize = 2048, int numSFXChannels = 32)
+        bool Init(int freq, Uint16 format, int channels, int chunksize, int numSFXChannels)
         {
             if (Mix_OpenAudio(freq, format, channels, chunksize) == -1) {
                 return false;
